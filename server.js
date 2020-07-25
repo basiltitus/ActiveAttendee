@@ -54,7 +54,7 @@ app.get('/', (req, res) =>
   res.sendFile(__dirname+'/public/index.html');
 
 }
-})
+)
 app.post('/',function(req,res){
   if(req.body.button=='login')
   res.sendFile(__dirname+'/public/login.html')
