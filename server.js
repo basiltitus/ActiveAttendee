@@ -50,11 +50,9 @@ app.get('/styles.css',(req,res)=>{
 })
 app.use(bodyParser.urlencoded({extended:true}));
 app.get('/', (req, res) =>
-{var user = firebase.auth().currentUser;
-  if(!user)
+{
   res.sendFile(__dirname+'/public/index.html');
-else {
-  res.redirect('/docspage');
+
 }
 })
 app.post('/',function(req,res){
