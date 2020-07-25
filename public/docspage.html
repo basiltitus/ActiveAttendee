@@ -6,12 +6,13 @@
 
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 
     </head>
-  <body>
+  <body onload='starting()'>
   <div class='container'>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgb(255, 0, 102)">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <h1 style="font-family:Ubuntu;fontweight:bold;">Active Attendee</h1>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,46 +26,113 @@
       </div>
     </nav>
 </div>
-
     <center>
       <br><br><br><br>
-    <div>  <h1 style='color:rgb(255, 0, 102)'>Welcome </h1></div>
-<input type="text" id='inp'>
-    <form action="/docspage" method="post">
+    <div>  <h1 id='head1' style='color:rgb(255, 0, 102)'></h1></div>
       <br><br><br><br><br><br><br><br>
-      <button type="submit" name="button" value='login' class="btn btn-outline-danger">LOGOUT</button>&nbsp;&nbsp;
+      <button type="button" onclick="logout()" name="button" value='logout' class="btn btn-outline-danger">LOGOUT</button>&nbsp;&nbsp;
 &nbsp;   &nbsp;&nbsp;&nbsp;
-    </form>
 
-</center>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
+    <div id='inp2'>
+<i class="fas fa-car" style="font-size:100px;" data-toggle="tooltip" data-placement="bottom" title="A Car"></i>
+    </div>
+    </center>
+
+<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
 <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
 
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
 <script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyCA8XO2TBfldvoES7YctGkDTccHvPCROEw",
-    authDomain: "activeattendee.firebaseapp.com",
-    databaseURL: "https://activeattendee.firebaseio.com",
-    projectId: "activeattendee",
-    storageBucket: "activeattendee.appspot.com",
-    messagingSenderId: "98304474516",
-    appId: "1:98304474516:web:566c124ea2fb4c23e26381",
-    measurementId: "G-TTH6NL085N"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-</script>
-<script type="text/javascript">
-  const databas=firebase.database();
-  document.getElementById('inp').innerHTML=1;
+const firebaseConfig = {
+  apiKey: "AIzaSyCA8XO2TBfldvoES7YctGkDTccHvPCROEw",
+  authDomain: "activeattendee.firebaseapp.com",
+  databaseURL: "https://activeattendee.firebaseio.com",
+  projectId: "activeattendee",
+  storageBucket: "activeattendee.appspot.com",
+  messagingSenderId: "98304474516",
+  appId: "1:98304474516:web:566c124ea2fb4c23e26381",
+  measurementId: "G-TTH6NL085N"
+};
+firebase.initializeApp(firebaseConfig);
 
+function gett(){
+
+
+  const dbRef = firebase.database().ref();
+   const usersRef = dbRef.child('ActiveUsers');
+     const userListUI = document.getElementById("inp2");
+alert('inside get');
+     usersRef.on("child_changed", snap => {
+
+       let user = snap.val();
+
+       if(user.time == 'online')
+       {alert('successful');
+         //userListUI.innerHTML+=user.name;
+       var li = document.createElement("i");
+       li.setAttribute('id',user.name);
+       li.setAttribute('class','fas fa-car');
+      li.setAttribute('style','font-size:100px');
+       li.setAttribute('data-toggle','tooltip');
+       li.setAttribute('data-placement','bottom');
+       li.setAttribute('title',user.name);
+
+       userListUI.appendChild(li);
+
+//       $li.setAttribute("child-key", snap.key);
+  //     $li.addEventListener("click", userClicked) userListUI.append($li);
+}
+else{
+alert('offline');
+const delitem=document.getElementById(user.name);
+userListUI.removeChild(delitem);
+}
+
+});
+}
+
+ function writeUserData(userId,time) {
+   firebase.database().ref('ActiveUsers/' + userId).set({
+    name:userId,
+    time:time
+  });
+}
+async function starting(){
+await  firebase.auth().onAuthStateChanged(function(user) {
+   if (user) {
+     document.getElementById("head1").innerHTML ="Welcome "+ user.displayName;
+     writeUserData(user.displayName,'online');
+     gett();
+   } else {
+     // No user is signed in.
+     alert('not signed in');
+     location.href='/';
+   }
+ });
+}
+
+async function logout(){
+//  alert('hi');
+var user = firebase.auth().currentUser;
+await  firebase.auth().signOut().then(function() {
+  // Sign-out successful.
+  writeUserData(user.displayName,'offline');
+  location.href='/';
+}).catch(function(error) {
+  // An error happened.
+  alert(error);
+});
+}
 </script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
