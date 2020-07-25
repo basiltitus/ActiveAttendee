@@ -1,0 +1,10 @@
+body{
+  background-image: url('background.jpg');
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: cover;
+}
+input{
+  color: black;
+  background-color: rgba(255,255,255,0.3)
+}
