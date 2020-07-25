@@ -11,9 +11,9 @@
     </head>
   <body onload='starting()'>
   <div class='container'>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgb(255, 0, 102)">
+    <nav class="navbar navbar-expand-lg navbar-dark" >
       <a class="navbar-brand" href="/">
-        <h1 style="font-family:Ubuntu;fontweight:bold;">Active Attendee</h1>
+        <h1 style="font-family:Ubuntu;fontweight:bold;color:rgb(255, 0, 102);">Active Attendee</h1>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -21,20 +21,20 @@
       <div class="navbar-collapse" id="navbarTogglerDemo01">
 
         <ul class="navbar-nav ml-auto navarclass">
-          <li class="nav-item dropdown"><a class="nav-link btn-lg navbarclass" href="/">Home</a></li>
+          <li class="nav-item dropdown"><a class="nav-link btn-lg navbarclass" style="color:rgb(255, 0, 102);" href="/">Home</a></li>
         </ul>
       </div>
     </nav>
 </div>
     <center>
-      <br><br><br><br>
+
     <div>  <h1 id='head1' style='color:rgb(255, 0, 102)'></h1></div>
-      <br><br><br><br><br><br><br><br>
+      <img src="book.png" alt="Reading book" height="350px" width="350px"><br>
       <button type="button" onclick="logout()" name="button" value='logout' class="btn btn-outline-danger">LOGOUT</button>&nbsp;&nbsp;
 &nbsp;   &nbsp;&nbsp;&nbsp;
 
     <div id='inp2'>
-<i class="fas fa-car" style="font-size:100px;" data-toggle="tooltip" data-placement="bottom" title="A Car"></i>
+
     </div>
     </center>
 
@@ -65,17 +65,37 @@ firebase.initializeApp(firebaseConfig);
 
 function gett(){
 
+   var ref = firebase.database().ref('ActiveUsers/')
+const userListUI2 = document.getElementById("inp2");
+   ref.on('value', function(snapshot) {
+       snapshot.forEach(function(keysSnapshot) {
+           var keys = keysSnapshot.val();
+if(keys.time=='online')
+          { var li = document.createElement("i");
+           li.setAttribute('id',keys.name);
+           li.setAttribute('class','far fa-user-circle');
+           li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
+           li.setAttribute('data-toggle','tooltip');
+           li.setAttribute('data-placement','bottom');
+           li.setAttribute('title',keys.name);
+
+           userListUI2.appendChild(li);
+}
+
+
+       })
+   });
 
   const dbRef = firebase.database().ref();
    const usersRef = dbRef.child('ActiveUsers');
      const userListUI = document.getElementById("inp2");
-alert('inside get');
+//alert('inside get');
      usersRef.on("child_changed", snap => {
 
        let user = snap.val();
 
        if(user.time == 'online')
-       {alert('successful');
+       {//alert('successful');
          //userListUI.innerHTML+=user.name;
        var li = document.createElement("i");
        li.setAttribute('id',user.name);
@@ -91,7 +111,7 @@ alert('inside get');
   //     $li.addEventListener("click", userClicked) userListUI.append($li);
 }
 else{
-alert('offline');
+//alert('offline');
 const delitem=document.getElementById(user.name);
 userListUI.removeChild(delitem);
 }
@@ -114,7 +134,7 @@ await  firebase.auth().onAuthStateChanged(function(user) {
    } else {
      // No user is signed in.
      alert('not signed in');
-     location.href='/';
+     location.href='/errorpage';
    }
  });
 }

@@ -9,9 +9,9 @@
   </head>
   <body>
     <div class='container'>
-      <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(255, 0, 102)">
+      <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="/">
-          <h1 style="font-family:Ubuntu;fontweight:bold;">Active Attendee</h1>
+          <h1 style="color:rgb(255, 0, 102);font-family:Ubuntu;fontweight:bold;">Active Attendee</h1>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -19,8 +19,8 @@
         <div class="navbar-collapse" id="navbarTogglerDemo01">
 
           <ul class="navbar-nav ml-auto navarclass">
-            <li class="nav-item dropdown"><a class="nav-link btn-lg navbarclass" href="/">Home</a></li>
-            <li class="nav-item "><a class="nav-link btn-lg navbarclass" href="/login">Login</a></li>
+            <li class="nav-item dropdown"><a style="color:rgb(255, 0, 102);" class="nav-link btn-lg navbarclass" href="/">Home</a></li>
+            <li class="nav-item "><a style="color:rgb(255, 0, 102);" class="nav-link btn-lg navbarclass" href="/login">Login</a></li>
           </ul>
         </div>
       </nav>
@@ -69,7 +69,7 @@ async function register(){
    var name=document.getElementById('name').value;
    var email=document.getElementById('email').value;
    var password=document.getElementById('password').value;
-   alert(name+' '+password);
+   //alert(name+' '+password);
    var errorMessage="";
 await   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
   // Handle Errors here.
@@ -79,12 +79,12 @@ await   firebase.auth().createUserWithEmailAndPassword(email, password).catch(fu
   alert(errorMessage);
 });
 if(errorMessage=="")
-{alert('success');
+{//alert('success');
 var user = await firebase.auth().currentUser;
 await user.updateProfile({
 displayName: name,
 }).then(function() {
-  alert(user.displayName);
+  //alert(user.displayName);
 
 }).catch(function(error) {
   // An error happened.

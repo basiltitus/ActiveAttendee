@@ -40,19 +40,24 @@ function writeUserData(name, time) {
     time:time
   });
 }
-
+app.get('/401.jpg',(req,res)=>
+{
+  res.sendFile(__dirname+'/public/401.jpg');
+})
 app.get('/background.jpg',(req,res)=>
 {
   res.sendFile(__dirname+'/public/background.jpg');
+})
+app.get('/book.png',(req,res)=>
+{
+  res.sendFile(__dirname+'/public/book.png');
 })
 app.get('/styles.css',(req,res)=>{
   res.sendFile(__dirname+'/public/css/styles.css');
 })
 app.use(bodyParser.urlencoded({extended:true}));
 app.get('/', (req, res) =>
-{
-  res.sendFile(__dirname+'/public/index.html');
-
+{  res.sendFile(__dirname+'/public/index.html');
 }
 )
 app.post('/',function(req,res){
@@ -61,6 +66,9 @@ app.post('/',function(req,res){
   else {
     res.sendFile(__dirname+'/public/register.html');
   }
+});
+app.get('/errorpage',function(req,res){
+  res.sendFile(__dirname+'/public/errorpage.html');
 })
 app.get('/login',function(req,res){
   var user = firebase.auth().currentUser;
