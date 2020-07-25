@@ -12,8 +12,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://activeattendee.firebaseio.com"
 });
-// Firebase App (the core Firebase SDK) is always required and
-// must be listed before other Firebase SDKs
 var firebase = require("firebase/app");
 
 // Add the Firebase products that you want to use
@@ -77,67 +75,16 @@ app.get('/login',function(req,res){
 else
   res.redirect('/public/docspage');
 })
-// app.post('/login',async(req,res)=>{
-//   console.log(req.body)
-//   var email=req.body.email;
-//   var password=req.body.password;
-//   await firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-//   // Handle Errors here.
-//   var errorCode = error.code;
-//   var errorMessage = error.message;
-// res.render("error",{errorWords:errorMessage});
-//   // ...
-// });
-// res.redirect('/docspage')
-// })
 app.get('/register',function(req,res){
 
   res.sendFile(__dirname+'/public/register.html');
 
 })
-// app.post('/register',async(req,res)=>{
-// var name=req.body.name;
-// var email=req.body.email;
-// var password=req.body.password;
-// console.log(email);
-//   await firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-//     // Handle Errors here.
-//     var errorCode = error.code;
-//     var errorMessage = error.message;
-// res.render("error",{errorWords:errorMessage});
-//
-//   });
-//   var user = firebase.auth().currentUser;
-//
-// user.updateProfile({
-//   displayName: name,
-//
-// }).then(function() {
-//   // Update successful.
-// res.redirect('/docspage');
-// }).catch(function(error) {
-//   // An error happened.
-// });
-//
-//    })
-//
-//
    app.get('/docspage',(req,res)=>{
 res.sendFile(__dirname+'/public/docspage.html');
 });
 
 
-// app.post('/docspage',(req,res)=>
-// { var user = firebase.auth().currentUser;
-//   writeUserData(user.displayName,'offline');
-//   firebase.auth().signOut().then(function() {
-//   // Sign-out successful.
-//   res.redirect('/');
-// }).catch(function(error) {
-//   // An error happened.
-//   res.send(error);
-// });
-// })
 app.listen(process.env.PORT||3000,function(){
   console.log("Listening to port 3000");
 })
