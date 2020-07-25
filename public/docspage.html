@@ -62,7 +62,7 @@ const firebaseConfig = {
   measurementId: "G-TTH6NL085N"
 };
 firebase.initializeApp(firebaseConfig);
-
+var name;
 function gett(){
 
    var ref = firebase.database().ref('ActiveUsers/')
@@ -70,10 +70,10 @@ const userListUI2 = document.getElementById("inp2");
    ref.once('value', function(snapshot) {
        snapshot.forEach(function(keysSnapshot) {
            var keys = keysSnapshot.val();
-if(keys.time=='online')
+if(keys.time=='online'&&keys.name!=name)
           { var li = document.createElement("i");
            li.setAttribute('id',keys.name);
-           li.setAttribute('class','far fa-user-circle');
+           li.setAttribute('class','far fa-user');
            li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
            li.setAttribute('data-toggle','tooltip');
            li.setAttribute('data-placement','bottom');
@@ -121,6 +121,25 @@ userListUI.removeChild(delitem);
 }
 
 });
+usersRef.on("child_added", snap => {
+
+  let user = snap.val();
+
+  if(user.time == 'online')
+  {
+    //alert('successful');
+    //userListUI.innerHTML+=user.name;
+  var li = document.createElement("i");
+  li.setAttribute('id',user.name);
+  li.setAttribute('class','far fa-user-circle');
+ li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
+  li.setAttribute('data-toggle','tooltip');
+  li.setAttribute('data-placement','bottom');
+  li.setAttribute('title',user.name);
+
+  userListUI.appendChild(li);
+}
+});
 }
 
  function writeUserData(userId,time) {
@@ -134,6 +153,7 @@ async function starting(){
 await  firebase.auth().onAuthStateChanged(function(user) {
 if(flag==0)
    if (user) {
+     name=user.displayName;
      document.getElementById("head1").innerHTML ="Welcome "+ user.displayName;
      writeUserData(user.displayName,'online');
      gett();
