@@ -67,10 +67,11 @@ function gett(){
 
    var ref = firebase.database().ref('ActiveUsers/')
 const userListUI2 = document.getElementById("inp2");
-   ref.once('value', function(snapshot) {
+   ref.on('value', function(snapshot) {
+     document.getElementById('inp2').innerHTML='';
        snapshot.forEach(function(keysSnapshot) {
            var keys = keysSnapshot.val();
-if(keys.time=='online'&&keys.name!=name)
+if(keys.time=='online')
           { var li = document.createElement("i");
            li.setAttribute('id',keys.name);
            li.setAttribute('class','far fa-user');
@@ -89,57 +90,57 @@ if(keys.time=='online'&&keys.name!=name)
        })
    });
 
-  const dbRef = firebase.database().ref();
-   const usersRef = dbRef.child('ActiveUsers');
-     const userListUI = document.getElementById("inp2");
-//alert('inside get');
-     usersRef.on("child_changed", snap => {
-
-       let user = snap.val();
-
-       if(user.time == 'online')
-       {
-         //alert('successful');
-         //userListUI.innerHTML+=user.name;
-       var li = document.createElement("i");
-       li.setAttribute('id',user.name);
-       li.setAttribute('class','far fa-user-circle');
-      li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
-       li.setAttribute('data-toggle','tooltip');
-       li.setAttribute('data-placement','bottom');
-       li.setAttribute('title',user.name);
-
-       userListUI.appendChild(li);
-
-//       $li.setAttribute("child-key", snap.key);
-  //     $li.addEventListener("click", userClicked) userListUI.append($li);
-}
-else{
-//alert('offline');
-const delitem=document.getElementById(user.name);
-userListUI.removeChild(delitem);
-}
-
-});
-usersRef.on("child_added", snap => {
-
-  let user = snap.val();
-
-  if(user.time == 'online')
-  {
-    //alert('successful');
-    //userListUI.innerHTML+=user.name;
-  var li = document.createElement("i");
-  li.setAttribute('id',user.name);
-  li.setAttribute('class','far fa-user-circle');
- li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
-  li.setAttribute('data-toggle','tooltip');
-  li.setAttribute('data-placement','bottom');
-  li.setAttribute('title',user.name);
-
-  userListUI.appendChild(li);
-}
-});
+//   const dbRef = firebase.database().ref();
+//    const usersRef = dbRef.child('ActiveUsers');
+//      const userListUI = document.getElementById("inp2");
+// //alert('inside get');
+//      usersRef.on("child_changed", snap => {
+//
+//        let user = snap.val();
+//
+//        if(user.time == 'online')
+//        {
+//          //alert('successful');
+//          //userListUI.innerHTML+=user.name;
+//        var li = document.createElement("i");
+//        li.setAttribute('id',user.name);
+//        li.setAttribute('class','far fa-user-circle');
+//       li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
+//        li.setAttribute('data-toggle','tooltip');
+//        li.setAttribute('data-placement','bottom');
+//        li.setAttribute('title',user.name);
+//
+//        userListUI.appendChild(li);
+//
+// //       $li.setAttribute("child-key", snap.key);
+//   //     $li.addEventListener("click", userClicked) userListUI.append($li);
+// }
+// else{
+// //alert('offline');
+// const delitem=document.getElementById(user.name);
+// userListUI.removeChild(delitem);
+// }
+//
+// });
+// usersRef.on("child_added", snap => {
+//
+//   let user = snap.val();
+//
+//   if(user.time == 'online')
+//   {
+//     //alert('successful');
+//     //userListUI.innerHTML+=user.name;
+//   var li = document.createElement("i");
+//   li.setAttribute('id',user.name);
+//   li.setAttribute('class','far fa-user-circle');
+//  li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
+//   li.setAttribute('data-toggle','tooltip');
+//   li.setAttribute('data-placement','bottom');
+//   li.setAttribute('title',user.name);
+//
+//   userListUI.appendChild(li);
+// }
+// });
 }
 
  function writeUserData(userId,time) {
