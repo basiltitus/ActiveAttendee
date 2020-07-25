@@ -6,12 +6,13 @@
 
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 
     </head>
-  <body>
+  <body onload='gett()'>
   <div class='container'>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgb(255, 0, 102)">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <h1 style="font-family:Ubuntu;fontweight:bold;">Active Attendee</h1>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,11 +31,82 @@
       <br><br><br><br>
     <div>  <h1 style='color:rgb(255, 0, 102)'>Welcome <%= name %></h1></div>
 
+
+
     <form action="/docspage" method="post">
       <br><br><br><br><br><br><br><br>
       <button type="submit" name="button" value='login' class="btn btn-outline-danger">LOGOUT</button>&nbsp;&nbsp;
 &nbsp;   &nbsp;&nbsp;&nbsp;
     </form>
+    <div id='inp2'>
+
+    </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+    <script>
+      window.addEventListener("beforeunload", function (e) {
+      var confirmationMessage = "\o/";
+
+      (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+      return confirmationMessage;                            //Webkit, Safari, Chrome
+      });
+
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCA8XO2TBfldvoES7YctGkDTccHvPCROEw",
+        authDomain: "activeattendee.firebaseapp.com",
+        databaseURL: "https://activeattendee.firebaseio.com",
+        projectId: "activeattendee",
+        storageBucket: "activeattendee.appspot.com",
+        messagingSenderId: "98304474516",
+        appId: "1:98304474516:web:566c124ea2fb4c23e26381",
+        measurementId: "G-TTH6NL085N"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+      function gett(){
+      //  alert('hi');
+
+        const dbRef = firebase.database().ref();
+         const usersRef = dbRef.child('ActiveUsers');
+           const userListUI = document.getElementById("inp2");
+
+           usersRef.on("child_changed", snap => {
+
+             let user = snap.val();
+
+             if(user.time=='online')
+             {//userListUI.innerHTML+=user.name;
+             var li = document.createElement("i");
+             li.setAttribute('id',user.name);
+             li.setAttribute('class','fas fa-car');
+            li.setAttribute('style','font-size:100px');
+             li.setAttribute('data-toggle','tooltip');
+             li.setAttribute('data-placement','bottom');
+             li.setAttribute('title',user.name);
+
+             userListUI.appendChild(li);
+             alert('successful');
+      //       $li.setAttribute("child-key", snap.key);
+        //     $li.addEventListener("click", userClicked) userListUI.append($li);
+}
+else{
+  alert('offline');
+  const delitem=document.getElementById(user.name);
+  userListUI.removeChild(delitem);
+}
+
+   });
+}
+
+    </script>
+
 
 </center>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

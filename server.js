@@ -120,6 +120,7 @@ res.redirect('/docspage');
 
 
    app.get('/docspage',(req,res)=>{
+
      var user = firebase.auth().currentUser;
 
 if (user) {
