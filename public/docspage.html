@@ -68,23 +68,20 @@ function gett(){
    var ref = firebase.database().ref('ActiveUsers/')
 const userListUI2 = document.getElementById("inp2");
    ref.on('value', function(snapshot) {
-     document.getElementById('inp2').innerHTML='';
-       snapshot.forEach(function(keysSnapshot) {
-           var keys = keysSnapshot.val();
-if(keys.time=='online')
-          { var li = document.createElement("i");
-           li.setAttribute('id',keys.name);
+     document.getElementById('inp2').innerHTML="";
+       snapshot.forEach(function(snapshot) {
+        var key=snapshot.val();
+        if(key.time=="online")
+        {
+          console.log(key.name+" : online");
+          var li = document.createElement("i");
+           li.setAttribute('id',key.name);
            li.setAttribute('class','far fa-user');
            li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
-           li.setAttribute('data-toggle','tooltip');
-           li.setAttribute('data-placement','bottom');
-           li.setAttribute('title',keys.name);
+           li.setAttribute('title',key.name);
 
            userListUI2.appendChild(li);
-}else{
-  const delitem2=document.getElementById(user.name);
-  userListUI2.removeChild(delitem2);
-}
+        }
 
 
        })
