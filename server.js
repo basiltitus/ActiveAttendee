@@ -124,7 +124,7 @@ res.redirect('/docspage');
 
 if (user) {
 writeUserData(user.displayName,'online');
-res.sendFile(__dirname+'/public/docspage.html')
+res.render("docspage",{name:user.displayName});
 
 } else {
   // No user is signed in.
