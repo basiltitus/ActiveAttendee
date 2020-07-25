@@ -67,7 +67,7 @@ function gett(){
 
    var ref = firebase.database().ref('ActiveUsers/')
 const userListUI2 = document.getElementById("inp2");
-   ref.on('value', function(snapshot) {
+   ref.once('value', function(snapshot) {
        snapshot.forEach(function(keysSnapshot) {
            var keys = keysSnapshot.val();
 if(keys.time=='online')
@@ -80,6 +80,9 @@ if(keys.time=='online')
            li.setAttribute('title',keys.name);
 
            userListUI2.appendChild(li);
+}else{
+  const delitem2=document.getElementById(user.name);
+  userListUI2.removeChild(delitem2);
 }
 
 
@@ -95,11 +98,12 @@ if(keys.time=='online')
        let user = snap.val();
 
        if(user.time == 'online')
-       {//alert('successful');
+       {
+         //alert('successful');
          //userListUI.innerHTML+=user.name;
        var li = document.createElement("i");
        li.setAttribute('id',user.name);
-       li.setAttribute('class','far fa-user');
+       li.setAttribute('class','far fa-user-circle');
       li.setAttribute('style','font-size:50px;margin:10px;color:rgb(255, 0, 102)');
        li.setAttribute('data-toggle','tooltip');
        li.setAttribute('data-placement','bottom');
@@ -125,26 +129,30 @@ userListUI.removeChild(delitem);
     time:time
   });
 }
+var flag=0;
 async function starting(){
 await  firebase.auth().onAuthStateChanged(function(user) {
+if(flag==0)
    if (user) {
      document.getElementById("head1").innerHTML ="Welcome "+ user.displayName;
      writeUserData(user.displayName,'online');
      gett();
+     flag=1;
    } else {
      // No user is signed in.
      alert('not signed in');
      location.href='/errorpage';
+     flag=1;
    }
  });
+
 }
 
 async function logout(){
 //  alert('hi');
 var user = firebase.auth().currentUser;
 await  firebase.auth().signOut().then(function() {
-  // Sign-out successful.
-  writeUserData(user.displayName,'offline');
+    writeUserData(user.displayName,'offline');
   location.href='/';
 }).catch(function(error) {
   // An error happened.
